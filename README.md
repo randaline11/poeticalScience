@@ -1,2 +1,4 @@
 # poeticalScience
-Presidential Scholar 
+Presidential Scholar
+
+Readme to be added here
