@@ -29,18 +29,46 @@ function getPoets() {
       });
       utils.writeToFile('poets', justNames);
       utils.writeToFile('weights', listOfWeights);
+
+      filterPoets(justNames);
     });
 }
 
 function filterPoets(listOfPoetNames) {
-  /*
-  1. filter through poets
-  2. for each poet:
-    - add + instead fo spaces
-    - make request to open library
-  */
+  console.log('filter poets');
+  const filteredListOfPoets = listOfPoetNames.filter((poet) => {
+    console.log('in the filter');
+    const shouldIncludePoet = { s: false };
+    setTimeout(() => {
+      console.log('in the timeout');
+      // let shouldIncludePoet = false;
+      return axios.get(constants.filterurl, {
+        params: {
+          q: poet,
+        },
+      })
+        .then((body) => {
+          if (body.data.numFound !== 0) {
+            shouldIncludePoet.s = true;
+            console.log('should return this poet');
+          } else {
+            console.log('shoud not include this poet');
+          }
+        })
+        .catch((err) => {
+          console.log('error fetching poet: ', err);
+        });
 
+      // if (Math.random() <= 0.5) {
+      //   shouldIncludePoet = true;
+      // }
+    }, 2000);
+
+    return shouldIncludePoet;
   // http://openlibrary.org/search.json?q=charles+simic
+  });
+
+  console.log('list: ', filteredListOfPoets);
 }
 
 module.exports = {
