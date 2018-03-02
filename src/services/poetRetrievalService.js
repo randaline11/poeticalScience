@@ -1,5 +1,6 @@
 const xmljs = require('xml-js');
 const axios = require('axios');
+const promiseRetry = require('promise-retry');
 const constants = require('../constants/constants.js');
 const utils = require('../constants/utils.js');
 
@@ -36,39 +37,105 @@ function getPoets() {
 
 function filterPoets(listOfPoetNames) {
   console.log('filter poets');
-  const filteredListOfPoets = listOfPoetNames.filter((poet) => {
-    console.log('in the filter');
-    const shouldIncludePoet = { s: false };
-    setTimeout(() => {
-      console.log('in the timeout');
-      // let shouldIncludePoet = false;
-      return axios.get(constants.filterurl, {
-        params: {
-          q: poet,
-        },
-      })
-        .then((body) => {
-          if (body.data.numFound !== 0) {
-            shouldIncludePoet.s = true;
-            console.log('should return this poet');
-          } else {
-            console.log('shoud not include this poet');
-          }
-        })
-        .catch((err) => {
-          console.log('error fetching poet: ', err);
-        });
+  // const lastFew = listOfPoetNames.slice(0, 1000);
+  const copy = [];
 
-      // if (Math.random() <= 0.5) {
-      //   shouldIncludePoet = true;
-      // }
-    }, 2000);
-
-    return shouldIncludePoet;
-  // http://openlibrary.org/search.json?q=charles+simic
+  listOfPoetNames.forEach((poet) => {
+    copy.push(timeoutFilter(poet, copy));
   });
 
-  console.log('list: ', filteredListOfPoets);
+  Promise.all(copy).then((tada) => {
+    console.log('tada? ', tada);
+    const filteredPoets = tada.filter((poet) => {
+      return (poet);
+    });
+    console.log('filteredPoets: ', filteredPoets);
+  });
+}
+
+
+function timeoutFilter(poet, copy) {
+  return new Promise((fulfill, reject) => {
+    setTimeout(() => {
+      console.log('in the timeout');
+      // shouldFilterPoet(poet).then((res) => {
+
+      retryPoets(poet, shouldFilterPoet).then((res) => {
+        console.log('res: ', res);
+        if (res) {
+          fulfill(poet);
+        } else {
+          fulfill(res);
+        }
+      });
+    }, 5000);
+  });
+}
+
+async function findAuthor(docs, poet) {
+  const hasAuthor = await docs.find((doc) => {
+    return (doc.author_name == poet);
+  });
+  // console.log('hasAuthor in findAuthor function:', hasAuthor);
+  return (!!hasAuthor);
+}
+
+async function shouldFilterPoet(poet) {
+  return axios.get(constants.filterurl, {
+    params: {
+      q: poet,
+    },
+  })
+    .then((body) => {
+      const docs = body.data.docs;
+      // search for whether the poet has authored at least one work.
+      // serves to rule out musicians and poets not widely known.
+      // if (poet == 'Big Boi') {
+      //   console.log(body.data.docs);
+      // }
+      return findAuthor(docs, poet)
+        .then((hasAuthor) => {
+          console.log('found an author)', hasAuthor);
+          return hasAuthor;
+        });
+    });
+  //  .catch((err) => {
+  // if (err.code == 'ETIMEDOUT') {
+  //   console.log('ETIMEDOUT error for ', poet);
+  // } else if (err.response.status == 503) {
+  //   // retry request
+  //   console.log(err.response.status);
+  //   // console.log('error fetching poet: ', err);
+  // } else {
+  //   console.log('error fetching post', err.statusCode);
+  // }
+  //  });
+}
+
+function retryPoets(poet, shouldFilterPoet) {
+  // Conditional example
+  return promiseRetry((retry, number) => {
+    console.log('attempt number', number);
+
+    return shouldFilterPoet(poet)
+      .catch((err) => {
+        console.log('catching an error.....');
+        console.log('error code:', err.code);
+        if (err.code == 'ETIMEDOUT' || err.code == 'ECONNRESET' || err.response.status == 503) {
+          console.log('found etimedout error');
+          retry(err);
+        }
+
+        throw err;
+      });
+  })
+    .then((value) => {
+      console.log('success in retryPoets: ', value);
+      return value;
+    }, (err) => {
+      console.log('error in retryPoets: ', err);
+      return err;
+    });
 }
 
 module.exports = {
