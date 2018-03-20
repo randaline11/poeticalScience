@@ -3,6 +3,7 @@ const axios = require('axios');
 const promiseRetry = require('promise-retry');
 const constants = require('../constants/constants.js');
 const utils = require('../constants/utils.js');
+const crowdSourceService = require('./poetConnectionServices/crowdSourceService.js');
 
 function getPoets() {
   // https://codeburst.io/4-ways-for-making-http-s-requests-with-node-js-c524f999942d
@@ -17,29 +18,36 @@ function getPoets() {
       });
 
       const listOfPoets2 = listOfPoets.slice(0, 10);
+      console.log('listofpoets2: ', listOfPoets2[0].data);
 
       const justNames = listOfPoets2.map((poet) => {
         return poet.name;
       });
 
       filterPoets(justNames).then((filteredPoets) => {
-        console.log('gathering lsit of weights..');
-        console.log('list of filtered poets: ', filteredPoets);
-        const listOfWeights =
-        result1.graphml.graph.edge.reduce((filtered, edge) => {
-          if (filteredPoets[edge._attributes.source] &&
-            filteredPoets[edge._attributes.target]) {
-            const toPush = {
-              source: edge._attributes.source,
-              target: edge._attributes.target,
-              weight: edge.data._text,
-            };
-            filtered.push(toPush);
-          }
-          return filtered;
-        }, []);
-        console.log('istOfWeights: ', listOfWeights);
+        const weights = crowdSourceService.createCrowdsourceGraph(filteredPoets, result1.graphml);
+        console.log('weights: ', weights);
+        utils.writeToFile('poets', JSON.stringify(filteredPoets));
+        utils.writeToFile('weights', JSON.stringify(weights));
       });
+      // filterPoets(justNames).then((filteredPoets) => {
+      //   console.log('gathering lsit of weights..');
+      //   console.log('list of filtered poets: ', filteredPoets);
+      //   const listOfWeights =
+      //   result1.graphml.graph.edge.reduce((filtered, edge) => {
+      //     if (filteredPoets[edge._attributes.source] &&
+      //       filteredPoets[edge._attributes.target]) {
+      //       const toPush = {
+      //         source: edge._attributes.source,
+      //         target: edge._attributes.target,
+      //         weight: edge.data._text,
+      //       };
+      //       filtered.push(toPush);
+      //     }
+      //     return filtered;
+      //   }, []);
+      //   console.log('istOfWeights: ', listOfWeights);
+      // });
 
       // maybe hold off on this until poets are filtered??
       /*
