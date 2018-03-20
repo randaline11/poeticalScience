@@ -12,7 +12,37 @@ function getPoets() {
       let result1 = xmljs.xml2json(body.data, { compact: true, spaces: 4 });
       result1 = JSON.parse(result1);
 
+      const listOfPoets = result1.graphml.graph.node.map((myNode) => {
+        return { name: myNode._attributes.id, data: myNode.data };
+      });
+
+      const listOfPoets2 = listOfPoets.slice(0, 10);
+
+      const justNames = listOfPoets2.map((poet) => {
+        return poet.name;
+      });
+
+      filterPoets(justNames).then((filteredPoets) => {
+        console.log('gathering lsit of weights..');
+        console.log('list of filtered poets: ', filteredPoets);
+        const listOfWeights =
+        result1.graphml.graph.edge.reduce((filtered, edge) => {
+          if (filteredPoets[edge._attributes.source] &&
+            filteredPoets[edge._attributes.target]) {
+            const toPush = {
+              source: edge._attributes.source,
+              target: edge._attributes.target,
+              weight: edge.data._text,
+            };
+            filtered.push(toPush);
+          }
+          return filtered;
+        }, []);
+        console.log('istOfWeights: ', listOfWeights);
+      });
+
       // maybe hold off on this until poets are filtered??
+      /*
       const listOfWeights = result1.graphml.graph.edge.map((edge) => {
         return {
           source: edge._attributes.source,
@@ -21,35 +51,44 @@ function getPoets() {
         };
       });
 
-      const listOfPoets = result1.graphml.graph.node.map((myNode) => {
-        return { name: myNode._attributes.id, data: myNode.data };
-      });
-
-      const justNames = listOfPoets.map((poet) => {
-        return poet.name;
-      });
-      utils.writeToFile('poets', justNames);
+      utils.writeToFile('poets', filteredPoets);
       utils.writeToFile('weights', listOfWeights);
-
-      filterPoets(justNames);
+      */
     });
 }
 
 function filterPoets(listOfPoetNames) {
-  console.log('filter poets');
-  // const lastFew = listOfPoetNames.slice(0, 1000);
-  const copy = [];
+  return new Promise((fulfill, reject) => {
+    console.log('filter poets');
+    const copy = [];
+    // ///
+    //  const filteredPoets = {};
 
-  listOfPoetNames.forEach((poet) => {
-    copy.push(timeoutFilter(poet, copy));
-  });
-
-  Promise.all(copy).then((tada) => {
-    console.log('tada? ', tada);
-    const filteredPoets = tada.filter((poet) => {
-      return (poet);
+    listOfPoetNames.forEach((poet) => {
+      copy.push(timeoutFilter(poet, copy));
     });
-    console.log('filteredPoets: ', filteredPoets);
+
+    Promise.all(copy).then((tada) => {
+      const filteredPoets = tada.reduce((alreadyFiltered, poet) => {
+        if (poet) {
+          alreadyFiltered[poet] = 1;
+        }
+        return alreadyFiltered;
+      }, {});
+      // tada.forEach((poet) => {
+      //   if (poet) {
+      //     filteredPoets[poet] == 1;
+      //     console.log('found poet. inserted: ', poet);
+      //   }
+      // });
+      /*
+      const filteredPoets = tada.filter((poet) => {
+        return (poet);
+      });
+      */
+      console.log('filteredPoets: ', filteredPoets);
+      fulfill(filteredPoets);
+    });
   });
 }
 
@@ -58,8 +97,6 @@ function timeoutFilter(poet, copy) {
   return new Promise((fulfill, reject) => {
     setTimeout(() => {
       console.log('in the timeout');
-      // shouldFilterPoet(poet).then((res) => {
-
       retryPoets(poet, shouldFilterPoet).then((res) => {
         console.log('res: ', res);
         if (res) {
@@ -76,7 +113,6 @@ async function findAuthor(docs, poet) {
   const hasAuthor = await docs.find((doc) => {
     return (doc.author_name == poet);
   });
-  // console.log('hasAuthor in findAuthor function:', hasAuthor);
   return (!!hasAuthor);
 }
 
@@ -113,7 +149,6 @@ async function shouldFilterPoet(poet) {
 }
 
 function retryPoets(poet, shouldFilterPoet) {
-  // Conditional example
   return promiseRetry((retry, number) => {
     console.log('attempt number', number);
 
@@ -125,7 +160,6 @@ function retryPoets(poet, shouldFilterPoet) {
           console.log('found etimedout error');
           retry(err);
         }
-
         throw err;
       });
   })
