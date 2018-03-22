@@ -18,6 +18,7 @@ function getPoets() {
         return { name: myNode._attributes.id, data: myNode.data };
       });
 
+      // NOTE: remove after get a full set of poets
       const listOfPoets2 = listOfPoets.slice(0, 100);
       console.log('listofpoets2: ', listOfPoets2[0].data);
 
