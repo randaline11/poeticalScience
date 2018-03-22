@@ -15,7 +15,6 @@ function createCrowdsourceGraph(filteredPoets, graphml) {
       }
       return filtered;
     }, []);
-  console.log('istOfWeights: ', listOfWeights);
   return listOfWeights;
 }
 

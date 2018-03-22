@@ -1,8 +1,7 @@
-const poets = require('./services/poetRetrievalService');
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const path = require('path');
+import express from 'express';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import path from 'path';
 
 // initialize
 const app = express();
@@ -32,7 +31,3 @@ const port = process.env.PORT || 9090;
 app.listen(port);
 
 console.log(`listening on: ${port}`);
-
-
-console.log('hello world');
-poets.getPoets();

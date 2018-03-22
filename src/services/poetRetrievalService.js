@@ -13,11 +13,12 @@ function getPoets() {
       let result1 = xmljs.xml2json(body.data, { compact: true, spaces: 4 });
       result1 = JSON.parse(result1);
 
+      // NOTE: may no longer need this after popularity and everything is determined
       const listOfPoets = result1.graphml.graph.node.map((myNode) => {
         return { name: myNode._attributes.id, data: myNode.data };
       });
 
-      const listOfPoets2 = listOfPoets.slice(0, 10);
+      const listOfPoets2 = listOfPoets.slice(0, 100);
       console.log('listofpoets2: ', listOfPoets2[0].data);
 
       const justNames = listOfPoets2.map((poet) => {
@@ -30,38 +31,6 @@ function getPoets() {
         utils.writeToFile('poets', JSON.stringify(filteredPoets));
         utils.writeToFile('weights', JSON.stringify(weights));
       });
-      // filterPoets(justNames).then((filteredPoets) => {
-      //   console.log('gathering lsit of weights..');
-      //   console.log('list of filtered poets: ', filteredPoets);
-      //   const listOfWeights =
-      //   result1.graphml.graph.edge.reduce((filtered, edge) => {
-      //     if (filteredPoets[edge._attributes.source] &&
-      //       filteredPoets[edge._attributes.target]) {
-      //       const toPush = {
-      //         source: edge._attributes.source,
-      //         target: edge._attributes.target,
-      //         weight: edge.data._text,
-      //       };
-      //       filtered.push(toPush);
-      //     }
-      //     return filtered;
-      //   }, []);
-      //   console.log('istOfWeights: ', listOfWeights);
-      // });
-
-      // maybe hold off on this until poets are filtered??
-      /*
-      const listOfWeights = result1.graphml.graph.edge.map((edge) => {
-        return {
-          source: edge._attributes.source,
-          target: edge._attributes.target,
-          weight: edge.data._text,
-        };
-      });
-
-      utils.writeToFile('poets', filteredPoets);
-      utils.writeToFile('weights', listOfWeights);
-      */
     });
 }
 
@@ -69,8 +38,6 @@ function filterPoets(listOfPoetNames) {
   return new Promise((fulfill, reject) => {
     console.log('filter poets');
     const copy = [];
-    // ///
-    //  const filteredPoets = {};
 
     listOfPoetNames.forEach((poet) => {
       copy.push(timeoutFilter(poet, copy));
@@ -83,23 +50,11 @@ function filterPoets(listOfPoetNames) {
         }
         return alreadyFiltered;
       }, {});
-      // tada.forEach((poet) => {
-      //   if (poet) {
-      //     filteredPoets[poet] == 1;
-      //     console.log('found poet. inserted: ', poet);
-      //   }
-      // });
-      /*
-      const filteredPoets = tada.filter((poet) => {
-        return (poet);
-      });
-      */
       console.log('filteredPoets: ', filteredPoets);
       fulfill(filteredPoets);
     });
   });
 }
-
 
 function timeoutFilter(poet, copy) {
   return new Promise((fulfill, reject) => {
