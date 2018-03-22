@@ -4,9 +4,9 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
 const mongoose = require('mongoose');
+const apirouter = require('apirouter');
 
 // DB Setup
-// const mongoURI = process.env.MONGODB_URI || 'mongodb://admin:admin@ds121599.mlab.com:21599/poeticalscience';
 const mongoURI = process.env.POETICAL_DB_URL;
 mongoose.connect(mongoURI);
 console.log(`connected to mongo uri ${process.env.POETICAL_DB_URL}`);
@@ -34,6 +34,8 @@ app.use(bodyParser.json());
 app.get('/', (req, res) => {
   res.send('hi');
 });
+
+app.use('/api', apiRouter);
 
 // START THE SERVER
 // =============================================================================
