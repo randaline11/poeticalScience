@@ -1,7 +1,17 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import cors from 'cors';
-import path from 'path';
+const poets = require('./services/poetRetrievalService');
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const path = require('path');
+const mongoose = require('mongoose');
+
+// DB Setup
+// const mongoURI = process.env.MONGODB_URI || 'mongodb://admin:admin@ds121599.mlab.com:21599/poeticalscience';
+const mongoURI = process.env.POETICAL_DB_URL;
+mongoose.connect(mongoURI);
+console.log(`connected to mongo uri ${process.env.POETICAL_DB_URL}`);
+// set mongoose promises to es6 default
+mongoose.Promise = global.Promise;
 
 // initialize
 const app = express();
@@ -31,3 +41,7 @@ const port = process.env.PORT || 9090;
 app.listen(port);
 
 console.log(`listening on: ${port}`);
+
+
+console.log('hello world');
+poets.getPoets();
