@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Weight = require('../models/weight_model.js');
 
 function createMultipleWeights(weights) {
+  console.log('create multiple weights');
   Weight.insertMany(weights, (err, docs) => {
     if (err) {
       console.log('err: ', err);
@@ -12,12 +13,13 @@ function createMultipleWeights(weights) {
 }
 
 export const findWeight = (req, res) => {
+  console.log('findWeight');
   Weight.find({ source: req.body.weight, target: req.body.target })
     .then((foundWeight) => {
       console.log('found this weight', foundWeight);
     })
     .catch((err) => {
-
+      console.log('err');
     });
 };
 

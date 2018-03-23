@@ -1,6 +1,6 @@
 
 function createCrowdsourceGraph(filteredPoets, graphml) {
-  console.log('gathering lsit of weights..');
+  console.log('gathering list of weights..');
   console.log('list of filtered poets: ', filteredPoets);
   const listOfWeights =
     graphml.graph.edge.reduce((filtered, edge) => {

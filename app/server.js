@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
 const mongoose = require('mongoose');
-const apirouter = require('apirouter');
+const apirouter = require('./router.js');
 
 // DB Setup
 const mongoURI = process.env.POETICAL_DB_URL;
