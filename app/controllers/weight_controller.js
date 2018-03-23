@@ -37,9 +37,6 @@ export const getWeights = (req, res) => {
 export const createWeight = (req, res) => {
   console.log('createWeight');
   const newWeight = {
-    source: { type: String, default: '' },
-    target: { type: String, default: '' },
-    weight: { type: Number, default: 0 },
     source: req.body.source ? req.body.source : '',
     target: req.body.target ? req.body.target : '',
     weight: req.body.weight ? req.body.weight : 0,
