@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
-// create a PostSchema with a title field
+
+const Schema = mongoose.Schema;
+
 const BookSchema = new Schema({
   title: { type: String, default: '' },
   author: { type: String, default: '' },
@@ -20,4 +22,4 @@ const BookSchema = new Schema({
 // create PostModel class from schema
 const BookModel = mongoose.model('Book', BookSchema);
 
-export default BookModel;
+module.exports = { BookModel };

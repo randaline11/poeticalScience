@@ -12,7 +12,7 @@ function createMultipleWeights(weights) {
   });
 }
 
-export const findWeight = (req, res) => {
+const findWeight = (req, res) => {
   console.log('findWeight');
   Weight.find({ source: req.body.weight, target: req.body.target })
     .then((foundWeight) => {
@@ -23,7 +23,7 @@ export const findWeight = (req, res) => {
     });
 };
 
-export const getWeights = (req, res) => {
+const getWeights = (req, res) => {
   console.log('getWeights');
   Weight.find({})
     .then((result) => {
@@ -36,7 +36,7 @@ export const getWeights = (req, res) => {
     });
 };
 
-export const createWeight = (req, res) => {
+const createWeight = (req, res) => {
   console.log('createWeight');
   const newWeight = {
     source: req.body.source ? req.body.source : '',
@@ -52,3 +52,5 @@ export const createWeight = (req, res) => {
       res.status(500).json({ error });
     });
 };
+
+module.exports = { createWeight, getWeights, findWeight };

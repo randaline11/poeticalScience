@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Book = require('../models/book_model.js');
 
-export const createBook = (req, res) => {
+const createBook = (req, res) => {
   console.log('createBook');
   const newBook = {
     title: req.body.title ? req.body.title : undefined,
@@ -25,7 +25,7 @@ export const createBook = (req, res) => {
     });
 };
 
-export const getBooks = (req, res) => {
+const getBooks = (req, res) => {
   console.log('getBooks');
   Book.find({})
     .then((result) => {
@@ -37,6 +37,8 @@ export const getBooks = (req, res) => {
       res.status(500).json({ error });
     });
 };
+
+module.exports = { createBook, getBooks };
 //
 // const cleanPosts = (posts) => {
 //   return posts.map((post) => {

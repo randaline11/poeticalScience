@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
-// create a PostSchema with a title field
+
+const Schema = mongoose.Schema;
 const PoetSchema = new Schema({
   name: { type: String, default: '' },
-  weights: [ type: Schema.Types.ObjectId, ref: 'Poet' }],
-  books: [{type: Schema.Types.ObjectId, ref: 'Poet'}]
+  weights: [{ type: Schema.Types.ObjectId, ref: 'Poet' }],
+  books: [{ type: Schema.Types.ObjectId, ref: 'Poet' }],
 }, {
   toJSON: {
     virtuals: true,
@@ -13,4 +14,4 @@ const PoetSchema = new Schema({
 // create PostModel class from schema
 const PoetModel = mongoose.model('Poet', PoetSchema);
 
-export default PoetModel;
+module.exports = { PoetModel };

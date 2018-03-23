@@ -4,12 +4,12 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
 const mongoose = require('mongoose');
-const apirouter = require('./router.js');
+const apiRouter = require('./router.js');
 
 // DB Setup
 const mongoURI = process.env.POETICAL_DB_URL;
 mongoose.connect(mongoURI);
-console.log(`connected to mongo uri ${process.env.POETICAL_DB_URL}`);
+console.log('connected to mongo uri');
 // set mongoose promises to es6 default
 mongoose.Promise = global.Promise;
 
@@ -35,7 +35,7 @@ app.get('/', (req, res) => {
   res.send('hi');
 });
 
-app.use('/api', apiRouter);
+app.use('/api', apiRouter.router);
 
 // START THE SERVER
 // =============================================================================

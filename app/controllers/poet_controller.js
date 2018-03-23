@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Poet = require('../models/poet_model.js');
 
-export const createPoet = (req, res) => {
+const createPoet = (req, res) => {
   console.log('createPoet');
   const newPoet = {
     name: req.body.name ? req.body.name : undefined,
@@ -18,7 +18,7 @@ export const createPoet = (req, res) => {
     });
 };
 
-export const getPoets = (req, res) => {
+const getPoets = (req, res) => {
   console.log('getPoets');
   Poet.find({})
     .then((result) => {
@@ -30,3 +30,5 @@ export const getPoets = (req, res) => {
       res.status(500).json({ error });
     });
 };
+
+module.exports = { createPoet, getPoets };
