@@ -29,7 +29,6 @@ app.set('views', path.join(__dirname, '../app/views'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-
 // default index route
 app.get('/', (req, res) => {
   res.send('hi');
@@ -44,6 +43,4 @@ app.listen(port);
 
 console.log(`listening on: ${port}`);
 
-
-console.log('hello world');
 poets.getPoets();

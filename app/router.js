@@ -1,10 +1,9 @@
 const Express = require('express');
-
-const Router = Express.Router;
 const BookController = require('./controllers/book_controller');
 const WeightController = require('./controllers/weight_controller');
 const PoetController = require('./controllers/poet_controller');
 
+const Router = Express.Router;
 const router = Router();
 
 router.get('/', (req, res) => {

@@ -4,6 +4,7 @@ const promiseRetry = require('promise-retry');
 const constants = require('../constants/constants.js');
 const utils = require('../constants/utils.js');
 const crowdSourceService = require('./poetConnectionServices/crowdSourceService.js');
+const bookRetrievalService = require('./bookRetrievalService.js');
 
 function getPoets() {
   // https://codeburst.io/4-ways-for-making-http-s-requests-with-node-js-c524f999942d
@@ -19,7 +20,7 @@ function getPoets() {
       });
 
       // NOTE: remove after get a full set of poets
-      const listOfPoets2 = listOfPoets.slice(0, 100);
+      const listOfPoets2 = listOfPoets.slice(0, 10);
       console.log('listofpoets2: ', listOfPoets2[0].data);
 
       const justNames = listOfPoets2.map((poet) => {
@@ -96,6 +97,16 @@ async function shouldFilterPoet(poet) {
       return findAuthor(docs, poet)
         .then((hasAuthor) => {
           console.log('found an author)', hasAuthor);
+
+          if (hasAuthor) {
+            const formatting = bookRetrievalService.formatDocsIntoJSON(docs, poet);
+          }
+          /*
+          if has an author:
+          1. gather all books by that author
+          - for each book:
+          - grab
+          */
           return hasAuthor;
         });
     });
@@ -122,6 +133,7 @@ function retryPoets(poet, shouldFilterPoet) {
         console.log('error code:', err.code);
         if (err.code == 'ETIMEDOUT' || err.code == 'ECONNRESET' || err.response.status == 503) {
           console.log('found etimedout error');
+          console.log('error: ', err);
           retry(err);
         }
         throw err;
