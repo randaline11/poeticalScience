@@ -3,7 +3,7 @@ const axios = require('axios');
 const promiseRetry = require('promise-retry');
 const constants = require('../constants/constants.js');
 const utils = require('../constants/utils.js');
-const crowdSourceService = require('./poetConnectionServices/crowdSourceService.js');
+const crowdSourceService = require('./poetConnectionServices/crowdsourceService.js');
 const bookRetrievalService = require('./bookRetrievalService.js');
 
 function getPoets() {
