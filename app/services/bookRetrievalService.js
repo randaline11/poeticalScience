@@ -3,7 +3,8 @@ const constants = require('../constants/constants.js');
 
 function formatDocsIntoJSON(docs, poet) {
   console.log('formatDocsIntoJSON');
-  return docs.forEach((doc) => {
+  const allBooksForPoet = [];
+  docs.forEach((doc) => {
     if (doc.author_name == poet) {
       const newBookParams = {
         title: doc.title ? doc.title : undefined,
@@ -12,22 +13,27 @@ function formatDocsIntoJSON(docs, poet) {
         publish_place: doc.publish_place ? doc.publish_place : '',
         id_goodreads: doc.id_goodreads ? doc.id_goodreads : undefined,
         isbn: doc.isbn ? doc.isbn[0] : undefined,
+        ratings: 0,
+        reviews: 0,
+        average_rating: 0,
       };
-      console.log('newBookParams: ', newBookParams);
       if (newBookParams.isbn != undefined) {
-        console.log('about to retrieve poet ', newBookParams.author);
-        const retrieve = retrieveBookOnGoodreads(newBookParams.isbn);
-        console.log('retrieve: ', retrieve);
+        retrieveBookOnGoodreads(newBookParams.isbn, newBookParams)
+          .then((res) => {
+            if (res) {
+              console.log('result of retrieveBookOnGoodreads: ', res);
+            }
+          })
+          .catch((err) => {
+            console.log('error on return of retrieveBookOnGoodreads: ', err);
+          });
       }
     }
-
-    // then, get books on goodreads for reviews
   });
 }
 
-function retrieveBookOnGoodreads(isbn) {
+function retrieveBookOnGoodreads(isbn, newBookParams) {
   console.log('retrieveBookOnGoodreads');
-  console.log('isbn: ', isbn);
   return axios.get(constants.goodreadsBookURL, {
     params: {
       key: constants.goodreadsKey,
@@ -35,35 +41,18 @@ function retrieveBookOnGoodreads(isbn) {
     },
   })
     .then((body) => {
-      console.log('body of retrieveBookOnGoodreads: ', body.data);
-      console.log('type of body.data: ', typeof body.data);
-      if (typeof body.data === 'string') {
-        console.log('no books found, type was string');
-      } else {
-        const firstDoc = body.data.books[0];
-
-        const goodreadsParams = {
-          ratings: firstDoc.work_ratings_count ? firstDoc.work_ratings_count : 0,
-          reviews: firstDoc.work_reviews_count ? firstDoc.work_reviews_count : 0,
-          average_rating: firstDoc.average_rating ? firstDoc.average_rating : 0,
-        };
-        console.log('goodreadsParams: ', goodreadsParams);
-        return goodreadsParams;
-      }
+      const firstDoc = body.data.books[0];
+      newBookParams.ratings = firstDoc.work_ratings_count ? firstDoc.work_ratings_count : 0;
+      newBookParams.reviews = firstDoc.work_reviews_count ? firstDoc.work_reviews_count : 0;
+      newBookParams.average_rating = firstDoc.average_rating ? firstDoc.average_rating : 0;
+      return newBookParams;
     })
     .catch((error) => {
-      // console.log('error in retrieveBookOnGoodreads:', error);
       if (error.response.status === 404) {
-        console.log('not found on goodreads');
-        return 'not found on goodreads';
-        const goodreadsParams = {
-          ratings: 0,
-          reviews: 0,
-          average_rating: 0,
-        };
-        return goodreadsParams;
+        return `${newBookParams.title} not found on goodreads`;
       } else {
         console.log('unhandled error code in retrieveBookOnGoodreads: ', error.response.status);
+        return undefined;
       }
     });
 }
