@@ -15,8 +15,8 @@ const createBook = (req, res) => {
     average_rating: req.body.average_rating ? req.body.average_rating : undefined,
     first_publish_year: req.body.first_publish_year ? req.body.first_publish_year : undefined,
   };
-  const book = new Book(newBook);
-  book.save()
+  const mybook = Book.create(newBook);
+  mybook.save()
     .then((result) => {
       res.json(book);
     })

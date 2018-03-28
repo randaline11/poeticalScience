@@ -7,12 +7,11 @@ const BookSchema = new Schema({
   author: { type: String, default: '' },
   publisher: { type: String, default: '' },
   publish_place: { type: String, default: '' },
-  id_goodreads: { type: Number, default: undefined },
-  isbn: { type: Number, default: undefined },
+  isbn: { type: Number, default: 0 },
+  first_publish_year: { type: Number, default: 0 },
   ratings: { type: Number, default: 0 },
   reviews: { type: Number, default: 0 },
   average_rating: { type: Number, default: 0 },
-  first_publish_year: { type: Number, default: 0 },
 }, {
   toJSON: {
     virtuals: true,
@@ -22,4 +21,4 @@ const BookSchema = new Schema({
 // create PostModel class from schema
 const BookModel = mongoose.model('Book', BookSchema);
 
-module.exports = { BookModel };
+module.exports = BookModel;

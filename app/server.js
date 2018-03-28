@@ -45,12 +45,12 @@ app.listen(port);
 
 console.log(`listening on: ${port}`);
 
-// axios.get(`${constants.mongoURI}/api/books`)
-//   .then((book) => {
-//     console.log('book created: ', book);
-//   })
-//   .catch((err) => {
-//     console.log('error posting book: ', err);
-//   });
+axios.post(`${constants.apiRootURL}/books`, { title: 'hi' })
+  .then((book) => {
+    console.log('book created: ', book);
+  })
+  .catch((err) => {
+    console.log('error posting book: ', err);
+  });
 
 // poets.getPoets();
