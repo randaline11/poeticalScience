@@ -11,7 +11,7 @@ function formatDocsIntoJSON(docs, poet) {
         publisher: doc.publisher ? doc.publisher : '',
         publish_place: doc.publish_place ? doc.publish_place : '',
         id_goodreads: doc.id_goodreads ? doc.id_goodreads : undefined,
-        isbn: doc.isbn[0] ? doc.isbn[0] : undefined,
+        isbn: doc.isbn ? doc.isbn[0] : undefined,
       };
       console.log('newBookParams: ', newBookParams);
       if (newBookParams.isbn != undefined) {
@@ -35,7 +35,7 @@ function retrieveBookOnGoodreads(isbn) {
     },
   })
     .then((body) => {
-    //  console.log('body of retrieveBookOnGoodreads: ', body.data);
+      console.log('body of retrieveBookOnGoodreads: ', body.data);
       console.log('type of body.data: ', typeof body.data);
       if (typeof body.data === 'string') {
         console.log('no books found, type was string');
@@ -52,7 +52,19 @@ function retrieveBookOnGoodreads(isbn) {
       }
     })
     .catch((error) => {
-      console.log('error in retrieveBookOnGoodreads:', error);
+      // console.log('error in retrieveBookOnGoodreads:', error);
+      if (error.response.status === 404) {
+        console.log('not found on goodreads');
+        return 'not found on goodreads';
+        const goodreadsParams = {
+          ratings: 0,
+          reviews: 0,
+          average_rating: 0,
+        };
+        return goodreadsParams;
+      } else {
+        console.log('unhandled error code in retrieveBookOnGoodreads: ', error.response.status);
+      }
     });
 }
 

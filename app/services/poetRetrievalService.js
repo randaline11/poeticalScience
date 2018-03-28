@@ -131,7 +131,7 @@ function retryPoets(poet, shouldFilterPoet) {
       .catch((err) => {
         console.log('catching an error.....');
         console.log('error code:', err.code);
-        if (err.code == 'ETIMEDOUT' || err.code == 'ECONNRESET' || err.response.status == 503) {
+        if (err.code == 'ETIMEDOUT' || err.code == 'ECONNRESET' || err.response == undefined || err.response.status == 503) {
           console.log('found etimedout error');
           console.log('error: ', err);
           retry(err);
