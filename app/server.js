@@ -5,10 +5,12 @@ const cors = require('cors');
 const path = require('path');
 const mongoose = require('mongoose');
 const apiRouter = require('./router.js');
+const constants = require('./constants/constants.js');
+const BookController = require('./controllers/book_controller.js');
+const axios = require('axios');
 
 // DB Setup
-const mongoURI = process.env.POETICAL_DB_URL;
-mongoose.connect(mongoURI);
+mongoose.connect(`${constants.mongoURI}`); // /?ssl=true
 console.log('connected to mongo uri');
 // set mongoose promises to es6 default
 mongoose.Promise = global.Promise;
@@ -43,4 +45,15 @@ app.listen(port);
 
 console.log(`listening on: ${port}`);
 
-poets.getPoets();
+axios.post(
+  `${constants.mongoURI}/books`,
+  { title: 'hi' },
+)
+  .then((book) => {
+    console.log('book created: ', book);
+  })
+  .catch((err) => {
+    console.log('error posting book: ', err);
+  });
+
+// poets.getPoets();

@@ -18,7 +18,7 @@ const createBook = (req, res) => {
   const book = new Book(newBook);
   book.save()
     .then((result) => {
-      res.json(post);
+      res.json(book);
     })
     .catch((error) => {
       res.status(500).json({ error });

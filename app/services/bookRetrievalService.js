@@ -1,5 +1,6 @@
 const axios = require('axios');
 const constants = require('../constants/constants.js');
+const BookController = require('../controllers/book_controller.js');
 
 function formatDocsIntoJSON(docs, poet) {
   console.log('formatDocsIntoJSON');
@@ -20,8 +21,16 @@ function formatDocsIntoJSON(docs, poet) {
       if (newBookParams.isbn != undefined) {
         retrieveBookOnGoodreads(newBookParams.isbn, newBookParams)
           .then((res) => {
+            console.log('after retrieveBookOnGoodreads, newBookParams: ', newBookParams);
             if (res) {
               console.log('result of retrieveBookOnGoodreads: ', res);
+              axios.post(`${constants.mongoURI}/books`, res)
+                .then((book) => {
+                  console.log('book created: ', book);
+                })
+                .catch((err) => {
+                  console.log('error posting book: ', err);
+                });
             }
           })
           .catch((err) => {
@@ -49,7 +58,8 @@ function retrieveBookOnGoodreads(isbn, newBookParams) {
     })
     .catch((error) => {
       if (error.response.status === 404) {
-        return `${newBookParams.title} not found on goodreads`;
+        console.log(`${newBookParams.title} not found on goodreads`);
+        return newBookParams;
       } else {
         console.log('unhandled error code in retrieveBookOnGoodreads: ', error.response.status);
         return undefined;

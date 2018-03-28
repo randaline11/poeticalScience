@@ -46,7 +46,7 @@ const createWeight = (req, res) => {
   const weight = new Weight(newWeight);
   weight.save()
     .then((result) => {
-      res.json(post);
+      res.json(weight);
     })
     .catch((error) => {
       res.status(500).json({ error });

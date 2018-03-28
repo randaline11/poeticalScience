@@ -11,7 +11,7 @@ const createPoet = (req, res) => {
   const poet = new Poet(newPoet);
   poet.save()
     .then((result) => {
-      res.json(post);
+      res.json(poet);
     })
     .catch((error) => {
       res.status(500).json({ error });
