@@ -10,8 +10,11 @@ const BookController = require('./controllers/book_controller.js');
 const axios = require('axios');
 
 // DB Setup
-mongoose.connect(`${constants.mongoURI}`); // /?ssl=true
-console.log('connected to mongo uri');
+// cosnole.log('poetical: ', process.env.POETICAL_DB_URL);
+//const mongoURI = (process.env.POETICAL_DB_URL !== '') ? constants.mongoURI : 'mongodb://localhost/poetical';
+const mongoURI = 'mongodb://localhost/poetical';
+mongoose.connect(`${mongoURI}`); // /?ssl=true
+// console.log('connected to mongo uri');
 // set mongoose promises to es6 default
 mongoose.Promise = global.Promise;
 
@@ -45,7 +48,7 @@ app.listen(port);
 
 console.log(`listening on: ${port}`);
 
-axios.post(`${constants.apiRootURL}/books`, { title: 'hi' })
+const newBook = BookController.createBookLocal({ title: 'hi' })
   .then((book) => {
     console.log('book created: ', book);
   })

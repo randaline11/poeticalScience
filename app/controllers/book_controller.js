@@ -1,6 +1,32 @@
 const mongoose = require('mongoose');
 const Book = require('../models/book_model.js');
 
+const createBookLocal = (params) => {
+  return new Promise ((fulfill, reject) => {
+    const newBook = {
+      title: params.title ? params.title : undefined,
+      author: params.author ? params.author : '',
+      publisher: params.publisher ? params.publisher : '',
+      publish_place: params.publish_place ? params.publish_place : '',
+      id_goodreads: params.id_goodreads ? params.id_goodreads : undefined,
+      isbn: params.isbn ? params.isbn : undefined,
+      ratings: params.ratings ? params.ratings : 0,
+      reviews: params.reviews ? params.reviews : 0,
+      average_rating: params.average_rating ? params.average_rating : undefined,
+      first_publish_year: params.first_publish_year ? params.first_publish_year : undefined,
+    };
+    const mybook = new Book(newBook);
+    mybook.save()
+      .then((result) => {
+        fulfill(result);
+      })
+      .catch((error) => {
+        console.log('error in createBookLocal: ', error);
+        reject(error);
+      });
+  });
+}
+
 const createBook = (req, res) => {
   console.log('createBook');
   const newBook = {
@@ -18,7 +44,7 @@ const createBook = (req, res) => {
   const mybook = Book.create(newBook);
   mybook.save()
     .then((result) => {
-      res.json(book);
+      res.json(mybook);
     })
     .catch((error) => {
       res.status(500).json({ error });
@@ -38,7 +64,7 @@ const getBooks = (req, res) => {
     });
 };
 
-module.exports = { createBook, getBooks };
+module.exports = { createBook, createBookLocal, getBooks };
 //
 // const cleanPosts = (posts) => {
 //   return posts.map((post) => {
