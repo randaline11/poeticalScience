@@ -56,4 +56,4 @@ const newBook = BookController.createBookLocal({ title: 'hi' })
     console.log('error posting book: ', err);
   });
 
-// poets.getPoets();
+ poets.getPoets();

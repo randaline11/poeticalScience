@@ -18,6 +18,19 @@ const createPoet = (req, res) => {
     });
 };
 
+const getPoetsLocal = (req, res) => {
+  console.log('getPoets');
+  Poet.find({})
+    .then((result) => {
+      console.log('result of getting poet: ', result);
+      //  const newClean = cleanPoets(result);
+      res.json(result);
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
+};
+
 const getPoets = (req, res) => {
   console.log('getPoets');
   Poet.find({})
