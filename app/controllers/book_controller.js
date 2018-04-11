@@ -6,7 +6,6 @@ const getBooks = (req, res) => {
   Book.find({})
     .then((result) => {
       console.log('result of getting book: ', result);
-      //  const newClean = cleanBooks(result);
       res.json(result);
     })
     .catch((error) => {
@@ -15,6 +14,7 @@ const getBooks = (req, res) => {
 };
 
 const getBookLocalByTitle = (params) => {
+  console.log('getBookLocalByTitle');
   return new Promise((fulfill, reject) => {
     Book.findOne({ title: params.title })
       .then((result) => {
@@ -78,7 +78,7 @@ const createBook = (req, res) => {
 };
 
 const updateBookLocal = (params) => {
-  console.log('in updatePost server');
+  console.log('updateBookLocal');
   return new Promise((fulfill, reject) => {
     getBookLocalByTitle({ title: params.title })
       .then((res) => {

@@ -20,7 +20,7 @@ function getPoets() {
       });
 
       // NOTE: remove after get a full set of poets
-      const listOfPoets2 = listOfPoets.slice(0, 10);
+      const listOfPoets2 = listOfPoets.slice(0, 100);
       //  console.log('listofpoets2: ', listOfPoets2[0].data);
 
       const justNames = listOfPoets2.map((poet) => {
@@ -124,7 +124,6 @@ function retryPoets(poet, shouldFilterPoet) {
 
     return shouldFilterPoet(poet)
       .catch((err) => {
-        console.log('catching an error.....');
         console.log('error code:', err.code);
         if (err.code == 'ETIMEDOUT' || err.code == 'ECONNRESET' || err.response == undefined || err.response.status == 503) {
           console.log('found etimedout error');

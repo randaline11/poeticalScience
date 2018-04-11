@@ -4,7 +4,7 @@ const BookController = require('../controllers/book_controller.js');
 const PoetController = require('../controllers/poet_controller.js');
 
 function formatDocsIntoJSON(docs, poet) {
-  console.log('formatDocsIntoJSON for poet ', poet);
+  console.log('formating DocsIntoJSON for poet ', poet);
   return new Promise((fulfill, reject) => {
     const allBooksPromises = [];
     docs.forEach((doc) => {
@@ -27,7 +27,6 @@ function formatDocsIntoJSON(docs, poet) {
                 if (res) {
                   BookController.updateBookLocal(res)
                     .then((book) => {
-                      console.log(`created book, ${res.title} by ${res.author}`);
                       fulfill2(book);
                     })
                     .catch((err) => {
@@ -42,8 +41,6 @@ function formatDocsIntoJSON(docs, poet) {
           } else {
             BookController.updateBookLocal(newBookParams)
               .then((book) => {
-                //  console.log('book created: ', book);
-                console.log('pushing another book without goodreads');
                 fulfill2(book);
               })
               .catch((err) => {
@@ -55,7 +52,6 @@ function formatDocsIntoJSON(docs, poet) {
       }
     });
     Promise.all(allBooksPromises).then((data) => {
-      console.log(`done searching for promises for poet ${poet}. Data: ${data}`);
       const newPoet = {
         name: poet,
         books: data,
@@ -74,7 +70,6 @@ function formatDocsIntoJSON(docs, poet) {
 }
 
 function retrieveBookOnGoodreads(isbn, newBookParams) {
-//  console.log('retrieveBookOnGoodreads');
   return axios.get(constants.goodreadsBookURL, {
     params: {
       key: constants.goodreadsKey,

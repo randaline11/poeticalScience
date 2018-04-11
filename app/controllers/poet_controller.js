@@ -10,7 +10,6 @@ const createPoetLocal = (params) => {
     };
     Poet.create(newPoet)
       .then((result) => {
-        console.log('got a result? ', result);
         fulfill(result);
       })
       .catch((error) => {
@@ -40,8 +39,6 @@ const getPoetsLocal = (req, res) => {
   console.log('getPoets');
   Poet.find({})
     .then((result) => {
-      console.log('result of getting poet: ', result);
-      //  const newClean = cleanPoets(result);
       res.json(result);
     })
     .catch((error) => {
@@ -53,8 +50,6 @@ const getPoets = (req, res) => {
   console.log('getPoets');
   Poet.find({})
     .then((result) => {
-      console.log('result of getting poet: ', result);
-      //  const newClean = cleanPoets(result);
       res.json(result);
     })
     .catch((error) => {
@@ -63,6 +58,7 @@ const getPoets = (req, res) => {
 };
 
 const getPoetLocalByName = (params) => {
+  console.log('getPoetLocalByName');
   return new Promise((fulfill, reject) => {
     Poet.findOne({ name: params.name })
       .then((result) => {
@@ -75,7 +71,7 @@ const getPoetLocalByName = (params) => {
 };
 
 const updatePoetLocal = (params) => {
-  console.log('in updatePost server');
+  console.log('updatePoetLocal');
   return new Promise((fulfill, reject) => {
     getPoetLocalByName({ name: params.name })
       .then((res) => {
