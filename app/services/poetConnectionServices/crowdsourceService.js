@@ -1,3 +1,4 @@
+const WeightController = require('../../controllers/weight_controller.js');
 
 function createCrowdsourceGraph(filteredPoets, graphml) {
   console.log('gathering list of weights..');
@@ -18,4 +19,31 @@ function createCrowdsourceGraph(filteredPoets, graphml) {
   return listOfWeights;
 }
 
-module.exports = { createCrowdsourceGraph };
+// function createAllWeights(listOfWeights) {
+//   return new Promise((fulfill, reject) => {
+//     const weightsByPoet = {};
+//     const promiseArray = listOfWeights.map((weight) => {
+//       return new Promise((fulfill2, reject) => {
+//         WeightController.updateWeightLocal(weight)
+//           .then((res) => {
+//             weightsByPoet[res.source];
+//             fulfill2(book);
+//           })
+//           .catch((err) => {
+//             console.log('error posting book: ', err);
+//             reject();
+//           });
+//       });
+//     });
+//   });
+// }
+
+/*
+- for each one in list, either create new weight or update old findOne.. sort by
+source + target for each poet poetName
+- go through hashtable.
+  - get poet lcoal and update poet with these weights instead
+*/
+
+
+module.exports = { createCrowdsourceGraph, createAllWeights };
