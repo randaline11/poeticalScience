@@ -14,4 +14,4 @@ const PoetSchema = new Schema({
 // create PostModel class from schema
 const PoetModel = mongoose.model('Poet', PoetSchema);
 
-module.exports = { PoetModel };
+module.exports = PoetModel;

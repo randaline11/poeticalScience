@@ -100,13 +100,8 @@ async function shouldFilterPoet(poet) {
 
           if (hasAuthor) {
             const formatting = bookRetrievalService.formatDocsIntoJSON(docs, poet);
+            console.log('done with formatting: ', formatting);
           }
-          /*
-          if has an author:
-          1. gather all books by that author
-          - for each book:
-          - grab
-          */
           return hasAuthor;
         });
     });

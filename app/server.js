@@ -48,12 +48,13 @@ app.listen(port);
 
 console.log(`listening on: ${port}`);
 
-const newBook = BookController.createBookLocal({ title: 'hi' })
-  .then((book) => {
-    console.log('book created: ', book);
-  })
-  .catch((err) => {
-    console.log('error posting book: ', err);
-  });
+// tester code
+// const newBook = BookController.createBookLocal({ title: 'hi' })
+//   .then((book) => {
+//     console.log('book created: ', book);
+//   })
+//   .catch((err) => {
+//     console.log('error posting book: ', err);
+//   });
 
- poets.getPoets();
+poets.getPoets();

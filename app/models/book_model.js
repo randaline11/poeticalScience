@@ -7,7 +7,7 @@ const BookSchema = new Schema({
   author: { type: String, default: '' },
   publisher: { type: String, default: '' },
   publish_place: { type: String, default: '' },
-  isbn: { type: Number, default: 0 },
+  isbn: { type: String, default: undefined },
   first_publish_year: { type: Number, default: 0 },
   ratings: { type: Number, default: 0 },
   reviews: { type: Number, default: 0 },
