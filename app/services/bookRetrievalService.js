@@ -25,7 +25,7 @@ function formatDocsIntoJSON(docs, poet) {
             retrieveBookOnGoodreads(newBookParams.isbn, newBookParams)
               .then((res) => {
                 if (res) {
-                  BookController.createBookLocal(res)
+                  BookController.updateBookLocal(res)
                     .then((book) => {
                       console.log(`created book, ${res.title} by ${res.author}`);
                       fulfill2(book);
@@ -40,7 +40,7 @@ function formatDocsIntoJSON(docs, poet) {
                 console.log('error on return of retrieveBookOnGoodreads: ', err);
               });
           } else {
-            BookController.createBookLocal(newBookParams)
+            BookController.updateBookLocal(newBookParams)
               .then((book) => {
                 //  console.log('book created: ', book);
                 console.log('pushing another book without goodreads');
@@ -60,7 +60,7 @@ function formatDocsIntoJSON(docs, poet) {
         name: poet,
         books: data,
       };
-      PoetController.createPoetLocal(newPoet)
+      PoetController.updatePoetLocal(newPoet)
         .then((mongoPoet) => {
           console.log('poet created: ', mongoPoet);
           fulfill(mongoPoet);

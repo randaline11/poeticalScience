@@ -62,6 +62,43 @@ const getPoets = (req, res) => {
     });
 };
 
+const getPoetLocalByName = (params) => {
+  return new Promise((fulfill, reject) => {
+    Poet.findOne({ name: params.name })
+      .then((result) => {
+        fulfill(result);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
+const updatePoetLocal = (params) => {
+  console.log('in updatePost server');
+  return new Promise((fulfill, reject) => {
+    getPoetLocalByName({ name: params.name })
+      .then((res) => {
+        if (!res) {
+          createPoetLocal(params).then((createdPoet) => {
+            fulfill(createdPoet);
+          });
+        } else {
+          res.name = params.name ? params.name : undefined;
+          res.books = params.books ? params.books : undefined;
+          res.weights = params.weights ? params.weights : undefined;
+        }
+        res.save()
+          .then((result) => {
+            fulfill(result);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
+  }); // promises
+};
+
 module.exports = {
-  createPoet, getPoets, getPoetsLocal, createPoetLocal,
+  createPoet, getPoets, getPoetsLocal, createPoetLocal, updatePoetLocal, getPoetLocalByName,
 };

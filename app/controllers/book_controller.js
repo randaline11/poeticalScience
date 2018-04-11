@@ -1,8 +1,34 @@
 const mongoose = require('mongoose');
 const Book = require('../models/book_model.js');
 
+const getBooks = (req, res) => {
+  console.log('getBooks');
+  Book.find({})
+    .then((result) => {
+      console.log('result of getting book: ', result);
+      //  const newClean = cleanBooks(result);
+      res.json(result);
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
+};
+
+const getBookLocalByTitle = (params) => {
+  return new Promise((fulfill, reject) => {
+    Book.findOne({ title: params.title })
+      .then((result) => {
+        fulfill(result);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
 const createBookLocal = (params) => {
-  return new Promise ((fulfill, reject) => {
+  console.log('createBookLocal');
+  return new Promise((fulfill, reject) => {
     const newBook = {
       title: params.title ? params.title : undefined,
       author: params.author ? params.author : '',
@@ -25,7 +51,7 @@ const createBookLocal = (params) => {
         reject(error);
       });
   });
-}
+};
 
 const createBook = (req, res) => {
   console.log('createBook');
@@ -51,20 +77,41 @@ const createBook = (req, res) => {
     });
 };
 
-const getBooks = (req, res) => {
-  console.log('getBooks');
-  Book.find({})
-    .then((result) => {
-      console.log('result of getting book: ', result);
-      //  const newClean = cleanBooks(result);
-      res.json(result);
-    })
-    .catch((error) => {
-      res.status(500).json({ error });
-    });
+const updateBookLocal = (params) => {
+  console.log('in updatePost server');
+  return new Promise((fulfill, reject) => {
+    getBookLocalByTitle({ title: params.title })
+      .then((res) => {
+        if (!res) {
+          createBookLocal(params).then((createdBook) => {
+            fulfill(createdBook);
+          });
+        } else {
+          res.title = params.title ? params.title : undefined;
+          res.author = params.author ? params.author : '';
+          res.publisher = params.publisher ? params.publisher : '';
+          res.publish_place = params.publish_place ? params.publish_place : '';
+          res.id_goodreads = params.id_goodreads ? params.id_goodreads : undefined;
+          res.isbn = params.isbn ? params.isbn : undefined;
+          res.ratings = params.ratings ? params.ratings : 0;
+          res.reviews = params.reviews ? params.reviews : 0;
+          res.average_rating = params.average_rating ? params.average_rating : undefined;
+          res.first_publish_year = params.first_publish_year ? params.first_publish_year : undefined;
+        }
+        res.save()
+          .then((result) => {
+            fulfill(result);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
+  }); // promises
 };
 
-module.exports = { createBook, createBookLocal, getBooks };
+module.exports = {
+  createBook, createBookLocal, getBooks, getBookLocalByTitle, updateBookLocal,
+};
 //
 // const cleanPosts = (posts) => {
 //   return posts.map((post) => {
