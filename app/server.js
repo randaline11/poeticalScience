@@ -11,9 +11,9 @@ const axios = require('axios');
 
 // DB Setup
 // cosnole.log('poetical: ', process.env.POETICAL_DB_URL);
-//const mongoURI = (process.env.POETICAL_DB_URL !== '') ? constants.mongoURI : 'mongodb://localhost/poetical';
-const mongoURI = 'mongodb://localhost/poetical';
-mongoose.connect(`${mongoURI}`); // /?ssl=true
+// const mongoURI = (process.env.POETICAL_DB_URL !== '') ? constants.mongoURI : 'mongodb://localhost/poetical';
+// const mongoURI = 'mongodb://localhost/poetical';
+mongoose.connect('mongodb://admin:admin@ds121599.mlab.com:21599/poeticalscience'); // /?ssl=true
 // console.log('connected to mongo uri');
 // set mongoose promises to es6 default
 mongoose.Promise = global.Promise;

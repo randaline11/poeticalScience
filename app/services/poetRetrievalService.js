@@ -61,16 +61,15 @@ function filterPoets(listOfPoetNames) {
 function timeoutFilter(poet, copy) {
   return new Promise((fulfill, reject) => {
     setTimeout(() => {
-      console.log('in the timeout');
       retryPoets(poet, shouldFilterPoet).then((res) => {
-        console.log('res: ', res);
+        //    console.log('res: ', res);
         if (res) {
           fulfill(poet);
         } else {
           fulfill(res);
         }
       });
-    }, 5000);
+    }, 10000);
   });
 }
 
@@ -96,11 +95,12 @@ async function shouldFilterPoet(poet) {
       // }
       return findAuthor(docs, poet)
         .then((hasAuthor) => {
-          console.log('found an author)', hasAuthor);
+          console.log('found an author', poet);
 
           if (hasAuthor) {
-            const formatting = bookRetrievalService.formatDocsIntoJSON(docs, poet);
-            console.log('done with formatting: ', formatting);
+            const formatting = bookRetrievalService.formatDocsIntoJSON(docs, poet).then((createdPoet) => {
+              console.log('finished getting all books for poet', createdPoet);
+            });
           }
           return hasAuthor;
         });
@@ -135,7 +135,7 @@ function retryPoets(poet, shouldFilterPoet) {
       });
   })
     .then((value) => {
-      console.log('success in retryPoets: ', value);
+    //  console.log('success in retryPoets: ', value);
       return value;
     }, (err) => {
       console.log('error in retryPoets: ', err);
