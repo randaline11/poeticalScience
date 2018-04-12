@@ -11,13 +11,20 @@ router.get('/', (req, res) => {
 });
 
 // ----------------------------------------------------
-router.route('/books')
-  .get(BookController.getBooks)
-  .post(BookController.createBook);
 
-router.route('/weights')
-  .get(WeightController.getWeights)
-  .post(WeightController.createWeight);
+router.route('/books/:id')
+  .get(BookController.getBookByID);
+
+router.route('/books')
+  .get(BookController.getBooks);
+// .post(BookController.createBook);
+
+router.route('/weights');
+// .get(WeightController.getWeights)
+//  .post(WeightController.createWeight);
+
+// router.route('/poets/:id');
+// .get(PoetController.getPoet);
 
 router.route('/poets')
   .get(PoetController.getPoets)

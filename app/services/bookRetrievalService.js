@@ -15,6 +15,7 @@ function formatDocsIntoJSON(docs, poet) {
             author: doc.author_name ? doc.author_name : '',
             publisher: doc.publisher ? doc.publisher : '',
             publish_place: doc.publish_place ? doc.publish_place : '',
+            first_publish_year: doc.first_publish_year ? doc.first_publish_year : 0,
             id_goodreads: doc.id_goodreads ? doc.id_goodreads : undefined,
             isbn: doc.isbn ? doc.isbn[0] : undefined,
             ratings: 0,

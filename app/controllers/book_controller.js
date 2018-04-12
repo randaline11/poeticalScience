@@ -13,6 +13,18 @@ const getBooks = (req, res) => {
     });
 };
 
+const getBookByID = (req, res) => {
+  console.log('getBookByID');
+  Book.findById(req.params.id)
+    .then((result) => {
+      console.log('result of getting book: ', result);
+      res.json(result);
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
+};
+
 const getBookLocalByTitle = (params) => {
   console.log('getBookLocalByTitle');
   return new Promise((fulfill, reject) => {
@@ -110,7 +122,12 @@ const updateBookLocal = (params) => {
 };
 
 module.exports = {
-  createBook, createBookLocal, getBooks, getBookLocalByTitle, updateBookLocal,
+  createBook,
+  createBookLocal,
+  getBooks,
+  getBookLocalByTitle,
+  updateBookLocal,
+  getBookByID,
 };
 //
 // const cleanPosts = (posts) => {

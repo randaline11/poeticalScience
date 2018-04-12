@@ -46,4 +46,4 @@ source + target for each poet poetName
 */
 
 
-module.exports = { createCrowdsourceGraph, createAllWeights };
+module.exports = { createCrowdsourceGraph };
