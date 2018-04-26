@@ -23,8 +23,8 @@ router.route('/weights');
 // .get(WeightController.getWeights)
 //  .post(WeightController.createWeight);
 
-// router.route('/poets/:id');
-// .get(PoetController.getPoet);
+router.route('/poets/:name')
+  .get(PoetController.getPoetByName);
 
 router.route('/poets')
   .get(PoetController.getPoets)
