@@ -12,6 +12,7 @@ const BookSchema = new Schema({
   ratings: { type: Number, default: 0 },
   reviews: { type: Number, default: 0 },
   average_rating: { type: Number, default: 0 },
+  cover_url: { type: String, default: '' },
 }, {
   toJSON: {
     virtuals: true,

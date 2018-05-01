@@ -18,6 +18,7 @@ function formatDocsIntoJSON(docs, poet) {
             first_publish_year: doc.first_publish_year ? doc.first_publish_year : 0,
             id_goodreads: doc.id_goodreads ? doc.id_goodreads : undefined,
             isbn: doc.isbn ? doc.isbn[0] : undefined,
+            cover_url: doc.cover_i ? `${constants.cover_url}${doc.cover_i}-M.jpg` : '',
             ratings: 0,
             reviews: 0,
             average_rating: 0,

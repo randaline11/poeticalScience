@@ -52,6 +52,7 @@ const createBookLocal = (params) => {
       reviews: params.reviews ? params.reviews : 0,
       average_rating: params.average_rating ? params.average_rating : undefined,
       first_publish_year: params.first_publish_year ? params.first_publish_year : undefined,
+      cover_url: params.cover_url ? params.cover_url : undefined,
     };
     const mybook = new Book(newBook);
     mybook.save()
@@ -78,6 +79,7 @@ const createBook = (req, res) => {
     reviews: req.body.reviews ? req.body.reviews : 0,
     average_rating: req.body.average_rating ? req.body.average_rating : undefined,
     first_publish_year: req.body.first_publish_year ? req.body.first_publish_year : undefined,
+    cover_url: req.body.cover_url ? req.body.cover_url : undefined,
   };
   const mybook = Book.create(newBook);
   mybook.save()
@@ -109,6 +111,7 @@ const updateBookLocal = (params) => {
           res.reviews = params.reviews ? params.reviews : 0;
           res.average_rating = params.average_rating ? params.average_rating : undefined;
           res.first_publish_year = params.first_publish_year ? params.first_publish_year : undefined;
+          res.cover_url = params.cover_url ? params.cover_url : undefined;
         }
         res.save()
           .then((result) => {

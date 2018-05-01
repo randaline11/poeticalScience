@@ -4,6 +4,7 @@ const goodreadsBookURL = 'https://www.goodreads.com/book/review_counts.json';
 const goodreadsKey = 'b3DhVHepHoKZHASoj1yKuA';
 const mongoURI = process.env.POETICAL_DB_URL;
 const apiRootURL = 'https://poeticalscience.herokuapp.com/api';
+const cover_url = 'https://covers.openlibrary.org/b/id/';
 
 module.exports = {
   poeturl,
@@ -12,4 +13,5 @@ module.exports = {
   goodreadsKey,
   mongoURI,
   apiRootURL,
+  cover_url,
 };
