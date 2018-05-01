@@ -68,6 +68,17 @@ const getPoetByName = (req, res) => {
     });
 };
 
+const getPoetById = (req, res) => {
+  console.log('getPoetByName');
+  Poet.findById(req.params.id)
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
+};
+
 const getPoetLocalByName = (params) => {
   console.log('getPoetLocalByName');
   return new Promise((fulfill, reject) => {
@@ -107,5 +118,5 @@ const updatePoetLocal = (params) => {
 };
 
 module.exports = {
-  createPoet, getPoetByName, getPoets, getPoetsLocal, createPoetLocal, updatePoetLocal, getPoetLocalByName,
+  createPoet, getPoetById, getPoetByName, getPoets, getPoetsLocal, createPoetLocal, updatePoetLocal, getPoetLocalByName,
 };

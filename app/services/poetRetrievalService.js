@@ -20,7 +20,7 @@ function getPoets() {
       });
 
       // NOTE: remove after get a full set of poets
-      const listOfPoets2 = listOfPoets.slice(0, 100);
+      const listOfPoets2 = listOfPoets.slice(400, 500);
       //  console.log('listofpoets2: ', listOfPoets2[0].data);
 
       const justNames = listOfPoets2.map((poet) => {
@@ -41,8 +41,8 @@ function filterPoets(listOfPoetNames) {
     console.log('filter poets');
     const copy = [];
 
-    listOfPoetNames.forEach((poet) => {
-      copy.push(timeoutFilter(poet, copy));
+    listOfPoetNames.forEach((poet, idx) => {
+      copy.push(timeoutFilter(poet, copy, idx));
     });
 
     Promise.all(copy).then((tada) => {
@@ -58,7 +58,7 @@ function filterPoets(listOfPoetNames) {
   });
 }
 
-function timeoutFilter(poet, copy) {
+function timeoutFilter(poet, copy, idx) {
   return new Promise((fulfill, reject) => {
     setTimeout(() => {
       retryPoets(poet, shouldFilterPoet).then((res) => {
@@ -69,7 +69,7 @@ function timeoutFilter(poet, copy) {
           fulfill(res);
         }
       });
-    }, 10000);
+    }, 2000 * idx);
   });
 }
 
