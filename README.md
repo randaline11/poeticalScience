@@ -1,4 +1,4 @@
-## Poetical Science: The Publishing Landscape, Visualized.
+# Poetical Science: The Publishing Landscape, Visualized.
 
 ## About:
 Check out the front end of the app [here](https://github.com/randaline11/poeticalFront) for a description of the project and more info!
