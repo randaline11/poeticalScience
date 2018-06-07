@@ -20,9 +20,9 @@ function getPoets() {
       });
 
       // NOTE: remove after get a full set of poets
-      const listOfPoets2 = listOfPoets.slice(400, 500);
+      const listOfPoets2 = listOfPoets.slice(5500, 6000);
       //  console.log('listofpoets2: ', listOfPoets2[0].data);
-
+      console.log('listOfPoetsLength: ', listOfPoets.length);
       const justNames = listOfPoets2.map((poet) => {
         return poet.name;
       });
